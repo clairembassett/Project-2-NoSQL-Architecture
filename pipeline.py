@@ -213,5 +213,7 @@ client = MongoClient(uri)
 
 raw = fetch_all()
 series = build_series(raw)
+CUTOFF = '2001-01'
+series = {name: [o for o in obs if o['ym'] >= CUTOFF] for name, obs in series.items()}
 raw_col, monthly_col = load_to_mongo(client, series)
 verify(monthly_col)y
