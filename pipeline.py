@@ -3,10 +3,9 @@ from getpass import getpass
 from datetime import datetime, timezone
 from pymongo import MongoClient
 
-# Pulls monthly CO2, methane, N2O, and temp anomaly from the Global Warming API
-# and dumps it into Mongo. Two collections so I can keep the raw pull separate
-# from the reshaped version I'll actually run regressions on.
+# Retrieves monthly Carbon Dioxide, Methane, Nitrous Oxide, and Temperature Anomalies from the Global Warming API, puts it in to Mongo, and creates two collections to seperate raw and processed data
 
+# API Endpoints
 ENDPOINTS = {
     'temperature':   'https://global-warming.org/api/temperature-api',
     'co2':           'https://global-warming.org/api/co2-api',
@@ -14,6 +13,7 @@ ENDPOINTS = {
     'nitrous_oxide': 'https://global-warming.org/api/nitrous-oxide-api',
 }
 
+# Ensuring that the retrieved data has correct units
 UNITS = {
     'temperature':   'degC_anomaly',
     'co2':           'ppm',
@@ -22,11 +22,8 @@ UNITS = {
 }
 
 
-# ---- helpers ----
-
+# Standardizing dates to only contain year and month
 def decimal_year_to_ym(dy):
-    # temp/methane/N2O come back as decimal years like "1983.75"
-    # pulling out year + month so everything keys off YYYY-MM
     dy = float(dy)
     y = int(dy)
     frac = dy - y
@@ -35,19 +32,16 @@ def decimal_year_to_ym(dy):
         m, y = 1, y + 1
     return f'{y:04d}-{m:02d}'
 
-
+# Replacing -999(the API's value for missing) as None instead of a real value
 def safe_float(x):
-    # API uses -999 for missing, so treat that as None instead of a real value
     try:
         v = float(x)
         return v if v > -999 else None
     except (TypeError, ValueError):
         return None
 
-
+# Enables each endpoint to have records in a different key
 def _first_list(payload, preferred_keys=()):
-    # each endpoint wraps its records under a different key
-    # check the obvious ones first, then fall back to whatever list shows up
     for k in preferred_keys:
         if k in payload and isinstance(payload[k], list):
             return payload[k]
@@ -58,10 +52,8 @@ def _first_list(payload, preferred_keys=()):
 
 
 # ---- fetch ----
-
+# Fetches data from all four endpoints and prints the shape of each for debugging
 def fetch_all():
-    # hit all four endpoints, print shape of each one so I can spot it
-    # if the API changes field names on me later
     raw = {}
     for name, url in ENDPOINTS.items():
         r = requests.get(url, timeout=30)
@@ -77,11 +69,7 @@ def fetch_all():
         print()
     return raw
 
-
-# ---- normalize ----
-# each series has its own shape, so one function per endpoint.
-# all of them spit out {ym, value, value_trend} so the loader doesn't care
-
+# Normalizing Temperature so the time and station is standardized
 def normalize_temperature(payload):
     # temperature records have 'time' (decimal year) and 'station' (land-ocean anomaly)
     out = []
@@ -94,10 +82,8 @@ def normalize_temperature(payload):
             out.append({'ym': decimal_year_to_ym(t), 'value': v})
     return out
 
-
+# Normalizing Carbon Dioxide to accept the year format and defining cycle as the main value
 def normalize_co2(payload):
-    # co2 is the odd one out - separate year/month/day fields instead of decimal year
-    # 'cycle' = seasonal, 'trend' = deseasonalized. grab both, use cycle as the main value
     out = []
     for r in _first_list(payload, ('co2',)):
         try:
@@ -110,10 +96,8 @@ def normalize_co2(payload):
             out.append({'ym': ym, 'value': val, 'value_trend': trend})
     return out
 
-
+# Normalizing the decimal year between Methan and Nitrous Oxide, setting average as monthly mean
 def normalize_decimal_year(payload, keys):
-    # methane and N2O are the same shape so they share a normalizer
-    # 'average' is the monthly mean, 'trend' is smoothed
     out = []
     for r in _first_list(payload, keys):
         t = r.get('date') or r.get('time')
@@ -126,10 +110,8 @@ def normalize_decimal_year(payload, keys):
             out.append({'ym': decimal_year_to_ym(t), 'value': val, 'value_trend': trend})
     return out
 
-
+# Preparing pipeline to handle possible different variants that may be passed by the input
 def build_series(raw):
-    # N2O endpoint has a space in its key ('nitrous oxide') so passing a few
-    # variants in case they clean it up later
     series = {
         'temperature':   normalize_temperature(raw['temperature']),
         'co2':           normalize_co2(raw['co2']),
@@ -139,8 +121,8 @@ def build_series(raw):
             ('nitrous oxide', 'nitrousoxide', 'nitrous_oxide'),
         ),
     }
-    # print the date range per series - good sanity check, and also shows
-    # the coverage gap (CO2 goes way further back than N2O) that I need for 10.7
+
+# Printing the date range for debugging
     for name, s in series.items():
         if s:
             print(f'{name:15s}  {len(s):5d} records   {s[0]["ym"]} -> {s[-1]["ym"]}')
@@ -149,8 +131,7 @@ def build_series(raw):
     return series
 
 
-# ---- load ----
-
+# Loading data to MongoDB
 def load_to_mongo(client, series):
     # using a separate db so I don't step on sample_mflix
     proj        = client['ds4320_project']
@@ -159,9 +140,7 @@ def load_to_mongo(client, series):
 
     fetched_at = datetime.now(timezone.utc)
 
-    # wipe first so re-running doesn't pile up duplicates
-    # raw_measurements = one doc per observation. keeps source_url on every
-    # doc so I can trace any number back to where it came from (provenance)
+# Wiping MongoDB to remove duplicates, and track of the number of raw document, and appending data to the raw docs
     raw_col.delete_many({})
     raw_docs = []
     for name, obs in series.items():
@@ -179,9 +158,7 @@ def load_to_mongo(client, series):
         raw_col.insert_many(raw_docs)
     print(f'raw_measurements : {raw_col.count_documents({})} docs')
 
-    # monthly = one doc per month with all four variables embedded.
-    # this is the shape I actually want for the regression - one row = one observation
-    # older months will be missing methane/N2O, which is fine (and expected)
+    # Creating a document for each month with all the four variables included
     monthly_col.delete_many({})
     by_month = {}
     for name, obs in series.items():
@@ -201,11 +178,9 @@ def load_to_mongo(client, series):
 
     return raw_col, monthly_col
 
-
-# ---- verify ----
-
+# Checking the monthly documents to ensure accuracy
 def verify(monthly_col):
-    # sanity check before I trust it
+
     total    = monthly_col.count_documents({})
     all_four = monthly_col.count_documents({
         'temperature':   {'$exists': True},
@@ -216,14 +191,11 @@ def verify(monthly_col):
     print(f'Total monthly docs          : {total}')
     print(f'Months with ALL four present: {all_four}  ({round(all_four/total*100,1)}%)')
 
-    # per-variable date range - this is the evidence that the series don't
-    # all start at the same time (needed for the bias section of 10.7)
     for v in ('temperature', 'co2', 'methane', 'nitrous_oxide'):
         first = monthly_col.find_one({v: {'$exists': True}}, sort=[('ym', 1)])
         last  = monthly_col.find_one({v: {'$exists': True}}, sort=[('ym', -1)])
         print(f'  {v:15s}  {first["ym"]} -> {last["ym"]}')
 
-    # eyeball the most recent fully populated month to confirm the embedding worked
     sample = monthly_col.find_one(
         {'temperature':   {'$exists': True},
          'co2':           {'$exists': True},
@@ -235,11 +207,7 @@ def verify(monthly_col):
     print('\nMost recent fully-populated month:')
     print(sample)
 
-
-# ---- run ----
-
-# prompting for the password instead of hardcoding so I don't accidentally
-# commit it to the repo
+# Running the connection to MongoDB and keeping the password private
 password = getpass("Enter your MongoDB password: ")
 uri = f"mongodb+srv://clairemckbassett:{password}@hw10.cy0djtp.mongodb.net/?appName=HW10"
 client = MongoClient(uri)
