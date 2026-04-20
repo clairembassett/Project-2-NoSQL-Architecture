@@ -51,7 +51,6 @@ def _first_list(payload, preferred_keys=()):
     return []
 
 
-# ---- fetch ----
 # Fetches data from all four endpoints and prints the shape of each for debugging
 def fetch_all():
     raw = {}
