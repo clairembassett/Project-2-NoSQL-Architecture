@@ -71,7 +71,7 @@ Global warming poses an existential threat to ecosystems, economies, and human h
 This project lives in the domain of environmental science. Understanding the relationship between these emissions and observed temperature changes is critical for informing policy decisions, guiding mitigation strategies, and preparing communities for future environmental impacts. This project seeks to quantify how greenhouse gas concentrations correlate with global temperature anomalies and to forecast future warming trends.
 
 ### Background Reading
-[Readings Linked Here](Readings)
+[Readings Linked Here](https://myuva-my.sharepoint.com/:f:/g/personal/qxm6fm_virginia_edu/IgBk1ngsjj3STKt1f-79-_mpAdm7Gj9QLn9T6rXDwRZv8f8?e=HArGUj)
 ### Summary of Readings
 
 | Title | Summary | Link |
