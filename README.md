@@ -25,7 +25,7 @@ EXECUTIVE SUMMARY HERE
 | Press Release | [**HERE**](PressRelease.MD) |
 | Data | [link to data](HERE) |
 | Pipeline |  [Pipeline Code](Pipeline/pipeline.ipynb)
-| License | [MIT](LICENSE.md) |
+| License | [MIT](LICENSE) |
 
 ---
 <br>
