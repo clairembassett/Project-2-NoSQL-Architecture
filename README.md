@@ -106,13 +106,11 @@ We chose to keep two collections: raw_measurements and monthly. This ensured we 
 ### Implicit Schema 
 We set a few ground rules for how documents are structured so both collections stay consistent and easy to work with down the pipeline. All field names use the same formatting (`nitrous_oxide`, `value_trend`, `fetched_at`, etc.) to keep everything uniform. Dates are stored as `YYYY-MM` strings in a `ym` field, which is the finest grain all four sources share and sorts correctly as a string without needing a real date type. We also decided to store units explicitly on each raw document (`ppm`, `ppb`, `degC_anomaly`) instead of leaving readers to infer them from the variable name. Every raw document carries a `source_url` and `fetched_at` so any observation can be traced back to the exact pull it came from. Missing values are represented as absent fields rather than `null` or `-999`, which keeps aggregations clean since they automatically skip months where a variable wasn't measured. Finally, the `monthly` collection is set up so that each month can only appear once. This is done by putting a unique index on the `ym` field, which tells MongoDB to reject any insert that would create a duplicate month.
 
-### Tables 
-| Table | Description | Link |
-|-------|-------------|------|
-| Text | A table containing 134,198 tweet records from the TruthSeeker dataset, describing the text features of tweets including information on word make-up and the percentage of tags in the text. | [text.parquet](https://myuva-my.sharepoint.com/:u:/g/personal/qxm6fm_virginia_edu/IQC4h9mPQ0XPQLXMnoB4yJBgAZQjTFWv8w55AuXFZ4ZpXf4?e=cZqAc6) |
-| Lexical | A table containing 134,198 tweet records from the TruthSeeker dataset, including the linguistic characteristics of each tweet such as punctuation and word classification.  | [lexical.parquet](https://myuva-my.sharepoint.com/:u:/g/personal/qxm6fm_virginia_edu/IQD-UPFOSB5OTaKMdoFk-BqCAQVtBeNMIQkpup2Z8Ty4UHM?e=mr8h1Q) |
-| Meta-data | A table containing 134,198 tweet records made from the TruthSeeker dataset, including information on the user who posted the tweet, including the size of following and interaction totals on posts. | [metadata.parquet](https://myuva-my.sharepoint.com/:u:/g/personal/qxm6fm_virginia_edu/IQBvurMzcYT6Qa8fpABqehkxASOv1qsr1GLJADMs3oPsg_U?e=J2r12y) |
-| Scores |A table containing 134,198 tweet records derived from the TruthSeeker dataset, capturing credibility, influence, and bot activity scores alongside fake news labels. | [scores.parquet](https://myuva-my.sharepoint.com/:u:/g/personal/qxm6fm_virginia_edu/IQDatITsN_HlQ5DUvow7xuI0AS76HvPFEMi-wZ_fZ30KiL4?e=mGfknG) |
+### Data Summary 
+| Collection | # Documents | Date range | Purpose |
+|---|---:|---|---|
+| `raw_measurements` | ~1,200 | 2001-01 → present | One document per observation, with full provenance. Used for source-tracing and cross-checks against NOAA and NASA. |
+| `monthly` | ~300 | 2001-01 → present | One document per month with all four variables present. Used for the regression analysis. |
 
 ### Data Dictionary 
 | Field | Type | Description | Example |
