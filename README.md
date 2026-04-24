@@ -109,8 +109,8 @@ We set a few ground rules for how documents are structured so both collections s
 ### Data Summary 
 | Collection | # Documents | Date range | Purpose |
 |---|---:|---|---|
-| `raw_measurements` | ~1,200 | 2001-01 → present | One document per observation, with full provenance. Used for source-tracing and cross-checks against NOAA and NASA. |
-| `monthly` | ~300 | 2001-01 → present | One document per month with all four variables present. Used for the regression analysis. |
+| `raw_measurements` | 1,130 | 2001-01 → present | One document per observation, with full provenance. Used for source-tracing and cross-checks against NOAA and NASA. |
+| `monthly` | 286 | 2001-01 → present | One document per month with all four variables present. Used for the regression analysis. |
 
 ### Data Dictionary 
 | Field | Type | Description | Example |
