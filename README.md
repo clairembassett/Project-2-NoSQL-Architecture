@@ -85,7 +85,7 @@ This project lives in the domain of environmental science. Understanding the rel
 ## Data Creation 
 
 ### Provenance
-The data was retrieved using the Global Warming API from NOAA. The API has endpoints for each requested field including Temperature Anomalies, Nitrous Oxide, Carbon Dioxide, and Methane. The API was contacted through a python script connecting to MongoDB(see pipeline/pipeline.py). The API pulls from two sources the NOAA Global Monitoring Laboratory for the three gases and NASA GISTEMP for the temperature anomaly.
+The data was retrieved from two sources. Temperature anomalies, methane, and nitrous oxide were pulled from the Global Warming API (global-warming.org), which aggregates data from NOAA's Global Monitoring Laboratory (for the two gases) and NASA GISTEMP (for temperature). Carbon dioxide was pulled directly from NOAA GML's monthly Mauna Loa CSV (co2_mm_mlo.csv), because the global-warming.org CO₂ endpoint only provides daily data back to 2016, whereas the NOAA monthly record extends to 1958.
 
 ### Code FIXXXXX
 
