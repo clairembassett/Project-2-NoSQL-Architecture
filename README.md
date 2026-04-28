@@ -1,6 +1,8 @@
 # DS 4320 Project 2 - TITLE HERE
 ### Executive Summary
-EXECUTIVE SUMMARY HERE
+This README documents a DS 4320 project analyzing permutation importance of greenhouse gases on temperature analyses. It includes completed project metadata (name, NetID, DOI, links, and license) plus a summary table for quick reference. It also contains a defined problem statement, rationale, data dictionary, domain exposition, background reading, provenance, and bias analysis.
+
+
 
 <br>
 
