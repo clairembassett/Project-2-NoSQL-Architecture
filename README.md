@@ -1,6 +1,6 @@
-# DS 4320 Project 2 - Methane as the Primary Predictor: Permutation Importance in Climate Forecasting Models
+# DS 4320 Project 2 - Optimizing Climate Models: Which Greenhouse Gas Matters Most?
 ### Executive Summary
-This README documents a DS 4320 project analyzing permutation importance of greenhouse gases on temperature analyses. It includes completed project metadata (name, NetID, DOI, links, and license) plus a summary table for quick reference. It also contains a defined problem statement, rationale, data dictionary, domain exposition, background reading, provenance, and bias analysis.
+This README documents a DS 4320 project analyzing permutation importance of greenhouse gases on temperature analyses. It includes completed project metadata (name, NetID, DOI, links, and license) plus a summary table for quick reference. It also contains a defined problem statement, press release, rationale, data dictionary, domain exposition, background reading, provenance, and bias analysis.
 
 
 <br>
