@@ -12,9 +12,7 @@ This README documents a DS 4320 project analyzing permutation importance of gree
 ### Name - Claire Bassett
 ### NetID - qxm6fm
 ### DOI - 
-### Press Release
-[**HERE**](PressRelease.MD)
-### Data - [link to data](HERE)
+### Press Release - [Methane Emerges as Dominant Predictor in Global Temperature Forecasting Models](PressRelease.MD)
 ### Pipeline - [Pipeline Code](Pipeline/pipeline.ipynb) EDIT
 ### License - [MIT](LICENSE.md) FINISHED
 ---
@@ -86,7 +84,7 @@ This project lives in the domain of environmental science. Understanding the rel
 ## Data Creation 
 
 ### Provenance
-The data was retrieved from two sources. Temperature anomalies, methane, and nitrous oxide were pulled from the Global Warming API (global-warming.org), which aggregates data from NOAA's Global Monitoring Laboratory (for the two gases) and NASA GISTEMP (for temperature). Carbon dioxide was pulled directly from NOAA GML's monthly Mauna Loa CSV (co2_mm_mlo.csv), because the global-warming.org CO₂ endpoint only provides daily data back to 2016, whereas the NOAA monthly record extends to 1958.
+The data was retrieved from 3 sources. Temperature anomalies, methane, and nitrous oxide were pulled from the Global Warming API (global-warming.org), which aggregates data from NOAA's Global Monitoring Laboratory (for the two gases) and NASA GISTEMP (for temperature). Carbon dioxide was pulled directly from NOAA GML's monthly Mauna Loa CSV (co2_mm_mlo.csv), because the global-warming.org CO₂ endpoint only provides daily data back to 2016, whereas the NOAA monthly record extends to 1958.
 
 ### Code FIXXXXX
 
