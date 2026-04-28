@@ -39,7 +39,7 @@ This README documents a DS 4320 project analyzing permutation importance of gree
   
 ### Rationale
 
-This refinement narrows its scope to the relationship between atmospheric greenhouse gas concentrations (CO2, methane, and nitrous oxide) and global temperature anomalies, the most well-established and measurable driver of warming. This keeps the model clean and interpretable while aligning with the available data from the Global Warming API, which provides continuous measurements of each gas alongside temperature records.
+This refinement narrows its scope to the relationship between atmospheric greenhouse gas concentrations (CO2, methane, and nitrous oxide) and global temperature anomalies, the most well-established and measurable driver of warming. This keeps the model clean and interpretable while aligning with the available data from the Global Warming API, NOAA's Global Monitoring Laboratory, and NASA GISTEMP which provide continuous measurements of each gas alongside temperature records.
 
 
 ### Motivation
