@@ -21,8 +21,7 @@ This README documents a DS 4320 project analyzing permutation importance of gree
 | Name | Claire Bassett |
 | NetID | qxm6fm |
 | DOI | [HEREE) |
-| Press Release | [**HERE**](PressRelease.MD) |
-| Data | [link to data](HERE) |
+| Press Release | [Methane Emerges as Dominant Predictor in Global Temperature Forecasting Models](PressRelease.MD) |
 | Pipeline |  [Pipeline Code](Pipeline/pipeline.ipynb)
 | License | [MIT](LICENSE) |
 
@@ -49,7 +48,7 @@ Global warming poses an existential threat to ecosystems, economies, and human h
 
 
 ### Press Release
-[**HERE**](PressRelease.MD)
+[Methane Emerges as Dominant Predictor in Global Temperature Forecasting Models](PressRelease.MD)
 
 ## Domain Exposition
 ### Terminology
@@ -86,11 +85,10 @@ This project lives in the domain of environmental science. Understanding the rel
 ### Provenance
 The data was retrieved from 3 sources. Temperature anomalies, methane, and nitrous oxide were pulled from the Global Warming API (global-warming.org), which aggregates data from NOAA's Global Monitoring Laboratory (for the two gases) and NASA GISTEMP (for temperature). Carbon dioxide was pulled directly from NOAA GML's monthly Mauna Loa CSV (co2_mm_mlo.csv), because the global-warming.org CO₂ endpoint only provides daily data back to 2016, whereas the NOAA monthly record extends to 1958.
 
-### Code FIXXXXX
-
+### Code
 | File | Description | Repo link |
 |------|-------------|-----------|
-| `pipeline.py` | This file retrieves the data, normalizes it, and loads it into MongoDB | [Link Here]('https://github.com/clairembassett/Project-2-NoSQL-Architecture/blob/main/pipeline.py') |
+| `pipeline.py` | This file retrieves the data, normalizes it,loads it into MongoDB, performs forecasting, and creates a visualization. | [Link Here]('https://github.com/clairembassett/Project-2-NoSQL-Architecture/blob/main/pipeline.py') |
 
 ### Bias Identification
 Bias from the data could occur due to an unequal record length across gases. Carbon Dioxide monitoring starts in 1958, Methane in 1983, and Nitrous Oxide in 2001. Additonally, all four variables come from the same API, which means that any systematic error or calibration issue would be shared across the data. The missing value is encoded as -999 for missing observations, this value could bias and skew results if included.
@@ -109,7 +107,7 @@ We set a few ground rules for how documents are structured so both collections s
 | Collection | # Documents | Date range | Purpose |
 |---|---:|---|---|
 | `raw_measurements` | 1,130 | 2001-01 → present | One document per observation, with full provenance. Used for source-tracing and cross-checks against NOAA and NASA. |
-| `monthly` | 286 | 2001-01 → present | One document per month with all four variables present. Used for the regression analysis. |
+| `monthly` | 286 | 2001-01 → present | One document per month with all four variables present. Used for the permutation importance. |
 
 ### Data Dictionary 
 | Field | Type | Description | Example |
