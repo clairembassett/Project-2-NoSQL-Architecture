@@ -11,7 +11,7 @@ This README documents a DS 4320 project analyzing permutation importance of gree
 
 ### Name - Claire Bassett
 ### NetID - qxm6fm
-### DOI - [![10.5281/zenodo.19866736](https://zenodo.org/badge/1216290484.svg)](https://doi.org/10.5281/zenodo.19866735)
+### DOI - [10.5281/zenodo.19866736]](https://doi.org/10.5281/zenodo.19866735)
 ### Press Release - [Methane Emerges as Dominant Predictor in Global Temperature Forecasting Models](PressRelease.MD)
 ### Pipeline - [Pipeline Code](Pipeline/pipeline.ipynb) 
 ### License - [MIT](LICENSE.md) 
@@ -20,7 +20,7 @@ This README documents a DS 4320 project analyzing permutation importance of gree
 |---|---|
 | Name | Claire Bassett |
 | NetID | qxm6fm |
-| DOI | [![10.5281/zenodo.19866736](https://zenodo.org/badge/1216290484.svg)](https://doi.org/10.5281/zenodo.19866735)|
+| DOI | [10.5281/zenodo.19866736](https://doi.org/10.5281/zenodo.19866735)|
 | Press Release | [Methane Emerges as Dominant Predictor in Global Temperature Forecasting Models](PressRelease.MD) |
 | Pipeline |  [Pipeline Code](Pipeline/pipeline.ipynb)
 | License | [MIT](LICENSE) |
