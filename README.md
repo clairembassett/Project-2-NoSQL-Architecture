@@ -13,8 +13,8 @@ This README documents a DS 4320 project analyzing permutation importance of gree
 ### NetID - qxm6fm
 ### DOI - 
 ### Press Release - [Methane Emerges as Dominant Predictor in Global Temperature Forecasting Models](PressRelease.MD)
-### Pipeline - [Pipeline Code](Pipeline/pipeline.ipynb) EDIT
-### License - [MIT](LICENSE.md) FINISHED
+### Pipeline - [Pipeline Code](Pipeline/pipeline.ipynb) 
+### License - [MIT](LICENSE.md) 
 ---
 | Spec | Value |
 |---|---|
